@@ -1,0 +1,38 @@
+============================
+	Objectives
+============================
+Objectives of this demo is to essentially write Reimers shooter tutorial using my engine and implement AI for it
+
+
+============================
+	Milestones
+============================
+[*]Planning
+[]Art
+[*]Model objects
+[*]Render the default terrain for phase 1
+[*]Render the players
+[*]Render a nuke
+[*]Implement position generator
+[*]Pixel perfect collision detection
+[*]Render power to the screen
+[*]Implement firing
+[*]Implement barrel positioning
+[]Render explosion on contact
+[]Destructable terrain
+[]Sound effects
+[]Implement a terrain generator
+[]AI
+
+============================
+		Time
+============================
+Planning:	1hour
+Core programming:	7.25hours	6pm-7:45pm	6:40pm-6:46pm	6:56pm-7:13pm
+Terrain generation:
+Art:	1.25hours	6:48pm-6:56pm
+Sound:
+	
+Total Time:	
+Total lines:	
+	
