@@ -120,7 +120,8 @@
     <Compile Include="Logic\TerrainGenerator.cs" />
     <Compile Include="Managers\StateManager.cs" />
     <Compile Include="Models\Enemy.cs" />
-    <Compile Include="Models\Explosion.cs" />
+    <Compile Include="Models\ExplosionParticle.cs" />
+    <Compile Include="Models\ExplosionParticleEmitter.cs" />
     <Compile Include="Models\Launcher.cs" />
     <Compile Include="Models\Nuke.cs" />
     <Compile Include="Models\Player.cs" />

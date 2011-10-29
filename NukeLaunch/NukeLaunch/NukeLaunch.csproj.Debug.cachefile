@@ -1,9 +1,12 @@
 Content\DefaultTerrain.xnb
 Content\NukeSprite.xnb
 Content\LauncherTruck.xnb
-Content\Explosion.xnb
-Content\Explosion1.xnb
 Content\LauncherBarrelLeft.xnb
 Content\LauncherBarrelRight.xnb
+Content\ExplosionParticle1.xnb
+Content\ExplosionParticle2.xnb
+Content\ExplosionParticle3.xnb
+Content\ExplosionParticle4.xnb
+Content\ExplosionParticle5.xnb
 Content\SpriteFont1.xnb
-Content\Explosion2.xnb
+Content\Smoke.xnb

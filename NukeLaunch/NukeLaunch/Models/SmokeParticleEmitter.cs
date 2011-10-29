@@ -16,29 +16,33 @@ using GWNorthEngine.Utils;
 namespace NukeLaunch.Models {
 	public class SmokeParticleEmitter : BaseParticle2DEmitter {
 		#region Class variables
-
+		private const float TIME_TO_LIVE = 750f;
+		public const float SPAWN_DELAY = 100f;
 		#endregion Class variables
 
-		#region Class propeties
-
-		#endregion Class properties
-
 		#region Constructor
-		public SmokeParticleEmitter(BaseParticle2DEmitterParams parms)
+		public SmokeParticleEmitter(ContentManager content, BaseParticle2DEmitterParams parms)
 			: base(parms) {
-
+			BaseParticle2DParams particleParms = new BaseParticle2DParams();
+			particleParms.Origin = new Vector2(16f);
+			particleParms.Texture = parms.ParticleTexture;
+			particleParms.TimeToLive = TIME_TO_LIVE;
+			base.particleParams = particleParms;
 		}
 		#endregion Constructor
 
 		#region Support methods
-		public override void createParticle() {
-			
+		public void createParticle(Vector2 position) {
+			base.particleParams.Position = position;
+			base.particles.Add(new SmokeParticle(base.particleParams));
 			base.createParticle();
 		}
 
-		public override void update(float elapsed) {
-			// create particle logic
+		public void update(float elapsed, Vector2 rocketPosition) {
 			base.update(elapsed);
+			if (this.elapsedSpawnTime >= base.spawnDelay) {
+				createParticle(rocketPosition);
+			}
 		}
 		#endregion Support methods
 	}

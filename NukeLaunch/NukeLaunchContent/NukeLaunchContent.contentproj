@@ -63,20 +63,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Explosion.png">
-      <Name>Explosion</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Explosion1.bmp">
-      <Name>Explosion1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="LauncherBarrelLeft.png">
       <Name>LauncherBarrelLeft</Name>
       <Importer>TextureImporter</Importer>
@@ -96,8 +82,35 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Explosion2.png">
-      <Name>Explosion2</Name>
+    <Compile Include="ExplosionParticle1.png">
+      <Name>ExplosionParticle1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ExplosionParticle2.png">
+      <Name>ExplosionParticle2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ExplosionParticle3.png">
+      <Name>ExplosionParticle3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ExplosionParticle4.png">
+      <Name>ExplosionParticle4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ExplosionParticle5.png">
+      <Name>ExplosionParticle5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Smoke.png">
+      <Name>Smoke</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

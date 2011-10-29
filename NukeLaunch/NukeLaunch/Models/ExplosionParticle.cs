@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,28 +11,26 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
+using GWNorthEngine.Utils;
 using NukeLaunch.Logic;
 namespace NukeLaunch.Models {
-	public class Enemy : Launcher {
+	public class ExplosionParticle : BaseParticle2D {
 		#region Class variables
-
+		private float rotationSpeed;
 		#endregion Class variables
 
-		#region Class propeties
-
-		#endregion Class properties
-
 		#region Constructor
-		public Enemy(ContentManager content, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ownerID)
-			: base(content, position, nukeDelegate, turnDelegate, ownerID) {
-
+		public ExplosionParticle(BaseParticle2DParams parms, float rotationSpeed)
+			:base(parms) {
+				this.rotationSpeed = rotationSpeed;
 		}
 		#endregion Constructor
 
 		#region Support methods
 		public override void update(float elapsed) {
-			//AI
 			base.update(elapsed);
+			base.position += Vector2.Multiply(base.direction, elapsed);
+			base.rotateAsLifeProgresses(rotationSpeed * elapsed);
 		}
 		#endregion Support methods
 	}

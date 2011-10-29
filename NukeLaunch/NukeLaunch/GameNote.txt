@@ -8,29 +8,33 @@ Objectives of this demo is to essentially write Reimers shooter tutorial using m
 	Milestones
 ============================
 [*]Planning
-[]Art
+[*]Art
 [*]Model objects
 [*]Render the default terrain for phase 1
 [*]Render the players
 [*]Render a nuke
-[*]Implement position generator
-[*]Pixel perfect collision detection
+[*]Position generator
+[*]Pixel perfect collision detection	-Alot of struggles with this....in the end the problem ended up being my Matrix calculation
 [*]Render power to the screen
 [*]Implement firing
-[*]Implement barrel positioning
-[]Render explosion on contact
+[*]Barrel positioning
+[*]Render explosion on contact
+[*]Implement turn mechanism and whoever's turn it is render the barrel, once implemented turn off so we can finish the other mechanics
+[*]Smoke trail
 []Destructable terrain
+[]Remaining game mechanic
 []Sound effects
-[]Implement a terrain generator
+[]Terrain generator
+[]Turn turn mechanism back on
 []AI
 
 ============================
 		Time
 ============================
-Planning:	1hour
-Core programming:	7.25hours	6pm-7:45pm	6:40pm-6:46pm	6:56pm-7:13pm
+Planning:	1hour	
+Core programming:	11.5hours	6:20pm-
 Terrain generation:
-Art:	1.25hours	6:48pm-6:56pm
+Art:	1.75hours	
 Sound:
 	
 Total Time:	

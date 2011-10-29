@@ -20,25 +20,17 @@ namespace NukeLaunch.Models {
 		private SmokeParticleEmitter emitter;
 		private Animated2DSprite bomb;
 		private Vector2 direction;
-		private SpriteState state;
-		private readonly Vector2 GRAVITY = new Vector2(0f, 10f / 1000f);
 		private List<Color[,]> textureColourDatas;
+		private readonly Vector2 GRAVITY = new Vector2(0f, 10f / 1000f);
+		public const float BLAST_RADIUS = 15f;
 		#endregion Class variables
 
 		#region Class propeties
-		public SpriteState State {
-			get { return this.state; }
-			set {
-				this.state = value;
-				if (this.state == SpriteState.InActive) {
-					this.bomb.Position = new Vector2(-200f);
-				}
-			}
-		}
 		public Color[,] TextureColourData { get { return this.textureColourDatas[this.bomb.AnimationManager.CurrentFrame]; } }
 		public Vector2 Position { get { return this.bomb.Position; } }
 		public Matrix Matrix { get; set; }
-		public BoundingBox BBox { get; set; }
+		public SpriteState State { get; set; }
+		public int OwnerID { get; set; }
 		#endregion Class properties
 
 		#region Constructor
@@ -58,38 +50,43 @@ namespace NukeLaunch.Models {
 			spriteParms.AnimationParams = animationParms;
 
 			this.bomb = new Animated2DSprite(spriteParms);
-			this.state = SpriteState.InActive;
+			this.State = SpriteState.InActive;
 			this.textureColourDatas = new List<Color[,]>();
 			Rectangle frame;
 			for (int i = 0; i < frames; i++) {
 				frame = this.bomb.Frames[i];
 				this.textureColourDatas.Add(
-					TextureUtils.textureTo2DArray(this.bomb.Texture, frame.X, frame.Y, frame.X + frame.Width, frame.Height));
+					TextureUtils.textureTo2DArray(this.bomb.Texture, startX: frame.X, width: frame.X + frame.Width));
 			}
+
+			//Smoke emitter
+			BaseParticle2DEmitterParams particleEmitterParms = new BaseParticle2DEmitterParams();
+			particleEmitterParms.ParticleTexture = LoadingUtils.loadTexture2D(content, "Smoke");
+			particleEmitterParms.SpawnDelay = SmokeParticleEmitter.SPAWN_DELAY;
+			this.emitter = new SmokeParticleEmitter(content, particleEmitterParms);
 		}
 		#endregion Constructor
 
 		#region Support methods
-		public void reset(Vector2 position, float direction, float power) {
+		public void reset(Vector2 position, Vector2 origin, float direction, float power, int ownerID) {
 			Vector2 up = new Vector2(0f, -1f);
 			Matrix rotationMatrix = Matrix.CreateRotationZ(direction);
 			this.bomb.Position = position;
 			this.bomb.Rotation = direction;
+			this.bomb.Origin = origin;
 			this.direction = Vector2.Transform(up, rotationMatrix);
 			this.direction *= power;
-			this.state = SpriteState.Active;
-			this.BBox = new BoundingBox(new Vector3(Vector2.Subtract(position, this.bomb.Origin), 0f), new Vector3(
-				Vector2.Add(position, this.bomb.Origin), 0f));
+			this.State = SpriteState.Active;
+			this.OwnerID = ownerID;
 		}
 
 		public void update(float elapsed) {
-			if (this.state == SpriteState.Active) {
+			if (this.State == SpriteState.Active) {
 				this.bomb.update(elapsed);
 				this.direction += GRAVITY * elapsed;
 				this.bomb.Position += this.direction;
 				this.bomb.Rotation = (float)Math.Atan2(this.direction.X, -this.direction.Y);
-				this.BBox = new BoundingBox(new Vector3(Vector2.Subtract(this.bomb.Position, this.bomb.Origin), 0f), new Vector3(
-					Vector2.Add(this.bomb.Position, this.bomb.Origin), 0f));
+				this.emitter.update(elapsed, this.bomb.Position);
 
 				Matrix origin = Matrix.CreateTranslation(new Vector3(-this.bomb.Origin, 0f));
 				Matrix scale = Matrix.CreateScale(new Vector3(this.bomb.Scale, 0f));
@@ -99,12 +96,12 @@ namespace NukeLaunch.Models {
 				this.Matrix = origin * rotation * scale * position;
 			} else {
 				this.bomb.reset();
-				//Destroy the bounding box
-				this.BBox = new BoundingBox(new Vector3(-1000f), new Vector3(-1000f));
+				this.emitter.update(elapsed);
 			}
 		}
 
 		public void render(SpriteBatch spriteBatch) {
+			this.emitter.render(spriteBatch);
 			if (this.State == SpriteState.Active) {
 				this.bomb.render(spriteBatch);
 			}

@@ -28,11 +28,8 @@ namespace NukeLaunch {
 		private Launcher player;
 		private Launcher[] enemies;
 		private Nuke nuke;
-		private Explosion explosion;
+		private ExplosionParticleEmitter explosionEmitter;
 		private const string TITLE = "Nuke Launch";
-#if DEBUG
-		private Texture2D debugLine;
-#endif
 
 		public Game1() {
 			BaseRendererParams parms = new BaseRendererParams();
@@ -53,9 +50,6 @@ namespace NukeLaunch {
 		/// all of your content.
 		/// </summary>
 		protected override void LoadContent() {
-#if DEBUG
-			this.debugLine = TextureUtils.create2DColouredTexture(GraphicsDevice, 1, 1, Color.White);
-#endif
 			reset(false);
 		}
 
@@ -66,15 +60,33 @@ namespace NukeLaunch {
 			this.terrain = new Terrain(Content);
 			this.enemies = new Enemy[3];
 			this.nuke = new Nuke(Content);
-			this.explosion = new Explosion(Content);
-			NukeDelegate nukeDelegate = delegate(Vector2 position, float direction, float power) {
-				this.nuke.reset(position, direction, power);
+			NukeDelegate nukeDelegate = delegate(Vector2 position, Vector2 origin, float direction, float power, int ownerID) {
+				this.nuke.reset(position, origin, direction, power, ownerID);
+			};
+			NextTurnDelegate turnDelegate = delegate(int firedID) {
+				bool foundNextTurn = false;
+				int nextID = firedID;
+				do {
+					nextID = (nextID + 1) % sizeof(StateManager.Player);
+					// are we a player or enemy
+					if (nextID == 0) {
+						foundNextTurn = true;
+					} else {
+						if (this.enemies[nextID-1] != null) {// we -1 becuase the player is not part of this array
+							foundNextTurn = true;
+						}
+					}
+				} while (!foundNextTurn);
+				if (StateManager.getInstance().CurrentGameState != StateManager.GameState.GameOver) {
+					StateManager.getInstance().WhosTurn = EnumUtils.numberToEnum<StateManager.Player>(nextID);
+				}
 			};
 			PositionGenerator.getInstance().reset();
-			this.player = new Player(Content, PositionGenerator.getInstance().generate(), nukeDelegate);
+			this.player = new Player(Content, PositionGenerator.getInstance().generate(), nukeDelegate, turnDelegate, 0);
 			for (int i = 0; i < this.enemies.Length; i++) {
-				this.enemies[i] = new Enemy(Content, PositionGenerator.getInstance().generate(), nukeDelegate);
+				this.enemies[i] = new Enemy(Content, PositionGenerator.getInstance().generate(), nukeDelegate, turnDelegate, i + 1);
 			}
+			this.explosionEmitter = new ExplosionParticleEmitter(Content, new BaseParticle2DEmitterParams());
 		}
 
 		/// <summary>
@@ -99,7 +111,7 @@ namespace NukeLaunch {
 
 			this.player.update(elapsed);
 			this.nuke.update(elapsed);
-			this.explosion.update(elapsed);
+			this.explosionEmitter.update(elapsed);
 			foreach (Launcher launcher in this.enemies) {
 				if (launcher != null) {
 					launcher.update(elapsed);
@@ -128,22 +140,24 @@ namespace NukeLaunch {
 				if (this.nuke.State == SpriteState.Active) {
 					// check for collision with enemies
 					for (int i = 0; i < this.enemies.Length; i++) {
-						if (this.enemies[i] != null) {
+						// Your own nuke cannot kill you
+						if (this.enemies[i] != null && this.enemies[i].ID != this.nuke.OwnerID) {
 							if (CollisionHelper.collision(this.nuke, this.enemies[i])) {
 								this.enemies[i] = null;
-								this.explosion.reset(this.nuke.Position);
+								this.explosionEmitter.reset(this.nuke.Position);
 								this.nuke.State = SpriteState.InActive;
 								break;
 							}
 						}
 					}
 
-					if (CollisionHelper.collision(this.nuke, this.player)) {
+					if (this.nuke.OwnerID != this.player.ID && CollisionHelper.collision(this.nuke, this.player)) {
 						//this.player = null;
-						this.explosion.reset(this.nuke.Position);
+						this.explosionEmitter.reset(this.nuke.Position);
 						StateManager.getInstance().CurrentGameState = StateManager.GameState.GameOver;
 					} else if (CollisionHelper.collision(this.nuke, this.terrain)) {
-						this.explosion.reset(this.nuke.Position);
+						this.explosionEmitter.reset(this.nuke.Position);
+						this.terrain.destroy(this.nuke.Position, Nuke.BLAST_RADIUS);
 						this.nuke.State = SpriteState.InActive;
 					}
 				}
@@ -154,6 +168,9 @@ namespace NukeLaunch {
 			}
 
 #if DEBUG
+			if (InputManager.getInstance().isButtonDown(MouseButton.Left)) {
+				this.terrain.destroy(InputManager.getInstance().MousePosition, Nuke.BLAST_RADIUS);
+			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
 				reset();
 			} else if (InputManager.getInstance().wasKeyPressed(Keys.C)) {
@@ -182,16 +199,7 @@ namespace NukeLaunch {
 				}
 			}
 			this.nuke.render(base.spriteBatch);
-			this.explosion.render(base.spriteBatch);
-#if DEBUG
-			DebugUtils.drawBoundingBox(base.spriteBatch, this.player.BBox, Color.Green, this.debugLine);
-			DebugUtils.drawBoundingBox(base.spriteBatch, this.nuke.BBox, Color.Red, this.debugLine);
-			foreach (Enemy enemy in this.enemies) {
-				if (enemy != null) {
-					DebugUtils.drawBoundingBox(base.spriteBatch, enemy.BBox, Color.Purple, this.debugLine);
-				}
-			}
-#endif
+			this.explosionEmitter.render(base.spriteBatch);
 			base.spriteBatch.End();
 			base.Draw(gameTime);
 		}

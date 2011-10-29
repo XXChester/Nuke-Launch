@@ -143,9 +143,7 @@ namespace NukeLaunch.Logic {
 		public static bool collision(Nuke nuke, Launcher launcher, out Vector2 collisionPoint) {
 			bool collision = false;
 			collisionPoint = new Vector2(-1f);
-			// first check BBox collision in order to check if we need to do pixel perfect collision
-			if (nuke.BBox.Intersects(launcher.BBox) && 
-				TexturesCollide(nuke.TextureColourData, nuke.Matrix, launcher.TextureColourData, launcher.Matrix, out collisionPoint)) {
+			if (TexturesCollide(nuke.TextureColourData, nuke.Matrix, launcher.TextureColourData, launcher.Matrix, out collisionPoint)) {
 				collision = true;
 			}
 			return collision;

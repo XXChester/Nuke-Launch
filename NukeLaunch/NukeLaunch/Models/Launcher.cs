@@ -13,7 +13,9 @@ using Microsoft.Xna.Framework.Media;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Utils;
+
 using NukeLaunch.Logic;
+using NukeLaunch.Managers;
 namespace NukeLaunch.Models {
 	public abstract class Launcher {
 		protected enum Direction {
@@ -32,6 +34,7 @@ namespace NukeLaunch.Models {
 		private Color[,] textureColourData;
 		private ContentManager content;
 		private NukeDelegate nukeDelegate;
+		private NextTurnDelegate turnDelegate;
 		protected const float BARREL_OFF_SET = 15f;
 		protected const float MAX_POWER = 100f;
 		protected const float MIN_POWER = 20f;
@@ -43,17 +46,19 @@ namespace NukeLaunch.Models {
 
 		#region Class propeties
 		public Color[,] TextureColourData { get { return this.textureColourData; } }
-		public BoundingBox BBox { get; set; }
 		public Matrix Matrix { get; set; }
+		public int ID { get; set; }
 		#endregion Class properties
 
 		#region Constructor
-		public Launcher(ContentManager content, Vector2 position, NukeDelegate nukeDelegate) {
+		public Launcher(ContentManager content, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ID) {
 			this.content = content;
 			this.angle = 90f;
 			this.direction = Direction.Right;
 			this.nukeDelegate = nukeDelegate;
+			this.turnDelegate = turnDelegate;
 			this.power = 100f;
+			this.ID = ID;
 
 			StaticDrawable2DParams staticParms = new StaticDrawable2DParams();
 			staticParms.Position = position;
@@ -74,8 +79,6 @@ namespace NukeLaunch.Models {
 			this.leftBarrel = new StaticDrawable2D(staticParms);
 
 			this.activeBarrel = this.rightBarrel;
-			this.BBox = new BoundingBox(new Vector3(Vector2.Subtract(this.truck.Position, new Vector2(this.truck.Origin.X,
-				this.truck.Origin.Y / 2f)), 0f), new Vector3(Vector2.Add(this.truck.Position, this.truck.Origin), 0f));
 			this.textureColourData = TextureUtils.TextureTo2DArray(this.truck.Texture);
 			setMatrix();
 		}
@@ -99,14 +102,13 @@ namespace NukeLaunch.Models {
 			this.truck.Position = new Vector2(this.truck.Position.X, this.truck.Position.Y + change);
 			this.leftBarrel.Position = new Vector2(this.leftBarrel.Position.X, this.leftBarrel.Position.Y + change);
 			this.rightBarrel.Position = new Vector2(this.rightBarrel.Position.X, this.rightBarrel.Position.Y + change);
-			this.BBox = new BoundingBox(new Vector3(Vector2.Subtract(this.truck.Position, new Vector2(this.truck.Origin.X,
-				this.truck.Origin.Y / 2f)), 0f), new Vector3(Vector2.Add(this.truck.Position, this.truck.Origin), 0f));
 			setMatrix();
 		}
 
 		public void fire() {
 			this.nukeDelegate.Invoke(
-				Vector2.Subtract(this.activeBarrel.Position, this.activeBarrel.Origin), this.activeBarrel.Rotation, this.power / 7f);
+				this.activeBarrel.Position, this.activeBarrel.Origin, this.activeBarrel.Rotation, this.power / 7f, this.ID);
+			//this.turnDelegate.Invoke(this.ID);
 		}
 
 		public virtual void update(float elapsed) {
@@ -120,7 +122,9 @@ namespace NukeLaunch.Models {
 		}
 
 		public virtual  void render(SpriteBatch spriteBatch) {
-			this.activeBarrel.render(spriteBatch);
+			if ((int)StateManager.getInstance().WhosTurn == this.ID) {
+				this.activeBarrel.render(spriteBatch);
+			}
 			this.truck.render(spriteBatch);
 		}
 		#endregion Support methods
