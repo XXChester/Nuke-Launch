@@ -138,26 +138,27 @@ namespace NukeLaunch {
 				}
 			} else if (StateManager.getInstance().CurrentGameState == StateManager.GameState.Active) {
 				if (this.nuke.State == SpriteState.Active) {
+					Vector2 collisionPoint;
 					// check for collision with enemies
 					for (int i = 0; i < this.enemies.Length; i++) {
-						// Your own nuke cannot kill you
 						if (this.enemies[i] != null && this.enemies[i].ID != this.nuke.OwnerID) {
-							if (CollisionHelper.collision(this.nuke, this.enemies[i])) {
+							if (CollisionHelper.collision(this.nuke, this.enemies[i], out collisionPoint)) {
 								this.enemies[i] = null;
-								this.explosionEmitter.reset(this.nuke.Position);
+								this.explosionEmitter.reset(collisionPoint);
 								this.nuke.State = SpriteState.InActive;
 								break;
 							}
 						}
 					}
 
-					if (this.nuke.OwnerID != this.player.ID && CollisionHelper.collision(this.nuke, this.player)) {
+					// Your own nuke cannot kill you
+					if (this.nuke.OwnerID != this.player.ID && CollisionHelper.collision(this.nuke, this.player, out collisionPoint)) {
 						//this.player = null;
-						this.explosionEmitter.reset(this.nuke.Position);
+						this.explosionEmitter.reset(collisionPoint);
 						StateManager.getInstance().CurrentGameState = StateManager.GameState.GameOver;
-					} else if (CollisionHelper.collision(this.nuke, this.terrain)) {
-						this.explosionEmitter.reset(this.nuke.Position);
-						this.terrain.destroy(GraphicsDevice, this.nuke.Position);
+					} else if (CollisionHelper.collision(this.nuke, this.terrain, out collisionPoint)) {
+						this.explosionEmitter.reset(collisionPoint);
+						this.terrain.destroy(collisionPoint);
 						this.nuke.State = SpriteState.InActive;
 					}
 				}
@@ -169,7 +170,7 @@ namespace NukeLaunch {
 
 #if DEBUG
 			if (InputManager.getInstance().isButtonDown(MouseButton.Left)) {
-				this.terrain.destroy(GraphicsDevice, InputManager.getInstance().MousePosition);
+				this.terrain.destroy(InputManager.getInstance().MousePosition);
 			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
 				reset();

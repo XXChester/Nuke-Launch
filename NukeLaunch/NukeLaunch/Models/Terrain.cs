@@ -18,7 +18,7 @@ namespace NukeLaunch.Models {
 		#region Class variables
 		private Color[,] textureColourData;
 		private StaticDrawable2D terrain;
-		private StaticDrawable2D crater;
+		private List<Vector2> distancesFromMiddle;
 		#endregion Class variables
 
 		#region Class propeties
@@ -31,65 +31,41 @@ namespace NukeLaunch.Models {
 			StaticDrawable2DParams parms = new StaticDrawable2DParams();
 			parms.Texture = LoadingUtils.loadTexture2D(content, "DefaultTerrain");
 			this.terrain = new StaticDrawable2D(parms);
-			parms.Texture = LoadingUtils.loadTexture2D(content, "Crater");
-			parms.Origin = new Vector2(32f);
-			parms.LightColour = Color.White;
-			this.crater = new StaticDrawable2D(parms);
 			this.textureColourData = TextureUtils.getColourData2D(this.terrain.Texture);
 			this.Matrix = Matrix.Identity;
+
+			this.distancesFromMiddle = new List<Vector2>();
+			Texture2D crater = LoadingUtils.loadTexture2D(content, "Crater");
+			Color[,] colours = TextureUtils.getColourData2D(crater);
+			for (int y = 0; y < crater.Height; y++) {
+				for (int x = 0; x < crater.Width; x++) {
+					if (colours[x, y] == Color.White) {
+						this.distancesFromMiddle.Add(new Vector2(x - 32f, y - 32f));// half of the textures size so we render at the origin
+					}
+				}
+			}
 		}
 		#endregion Constructor
 
 		#region Support methods
-		public void destroy(GraphicsDevice device, Vector2 position) {
-			// Render to texture the crater
-			this.crater.Position = position;
-			RenderTarget2D renderTarget = new RenderTarget2D(device, this.terrain.Texture.Width, this.terrain.Texture.Height);
-			device.SetRenderTarget(renderTarget);
-			device.Clear(Color.Transparent);
-
-			// first pass set the collision point
-			SpriteBatch spriteBatch = new SpriteBatch(device);
-			//spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.LinearClamp, DepthStencilState.Default,
-			//	RasterizerState.CullNone);
-
-			spriteBatch.Begin();
-			this.terrain.render(spriteBatch);
-			this.crater.render(spriteBatch);
-			spriteBatch.End();
-
-			// second pass make the collision point transparent
-
-
-			this.terrain.Texture = (Texture2D)renderTarget;
-			device.SetRenderTarget(null);
-			this.textureColourData = TextureUtils.getColourData2D(this.terrain.Texture);
-
-
-			// we need to make the white pixesl transparent
-			/*for (int y = 0; y < this.terrain.Texture.Height; y++) {
-				for (int x = 0; x < this.terrain.Texture.Width; x++) {
-					if (this.textureColourData[x, y] == Color.Red) {
-						this.textureColourData[x, y] = Color.Transparent;
-					}
+		public void destroy(Vector2 position) {
+			int tcdW = this.textureColourData.GetUpperBound(0) + 1;
+			int tcdH = this.textureColourData.GetUpperBound(1) + 1;
+			Vector2 pixelPosition;
+			for (int i = 0; i < this.distancesFromMiddle.Count; i++) {
+				pixelPosition = Vector2.Add(position, this.distancesFromMiddle[i]);
+				if (pixelPosition.X >= 0 && pixelPosition.X < tcdW && pixelPosition.Y >= 0 && pixelPosition.Y < tcdH) {
+					this.textureColourData[(int)pixelPosition.X, (int)pixelPosition.Y] = Color.Transparent;
 				}
-			}*/
-
-			using (System.IO.FileStream stream = new System.IO.FileStream("test.png", System.IO.FileMode.Create)) {
-				this.terrain.Texture.SaveAsPng(stream, this.terrain.Texture.Width, this.terrain.Texture.Height);
 			}
-
-			/*if ((y < this.textureColourData.GetUpperBound(0) - 1) && (x < this.textureColourData.GetUpperBound(1) - 1)) {
-				// flatten the array to 1D
-				Color[] colourData = new Color[this.terrain.Texture.Width * this.terrain.Texture.Height];
-				this.terrain.Texture.GetData<Color>(colourData);
-
-				// Create the crater
-				int startIndex = x + (y * this.terrain.Texture.Width);
-
-				colourData[x + (y * this.terrain.Texture.Width)] = Color.Transparent;
-				this.terrain.Texture.SetData<Color>(colourData);
-			}*/
+			// flatten the array
+			Color[] colours = new Color[tcdH * tcdW];
+			for (int x = 0; x < tcdW; x++) {
+				for (int y = 0; y < tcdH; y++) {
+					colours[x + y * tcdW] = this.textureColourData[x, y];
+				}
+			}
+			this.terrain.Texture.SetData<Color>(colours);
 		}
 
 		public void render(SpriteBatch spriteBatch) {

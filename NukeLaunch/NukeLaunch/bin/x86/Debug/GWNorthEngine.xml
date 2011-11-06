@@ -1210,9 +1210,10 @@
             </summary>
             <returns>InputManager</returns>
         </member>
-        <member name="M:GWNorthEngine.Input.InputManager.update">
+        <member name="M:GWNorthEngine.Input.InputManager.update(System.Boolean)">
             <summary>
             Main loop that updates all of the devices
+            <param name="isWindowActive">States whether the window is active or not</param>
             </summary>
         </member>
         <member name="M:GWNorthEngine.Input.InputManager.wasKeyPressed(Microsoft.Xna.Framework.Input.Keys)">
