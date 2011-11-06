@@ -22,7 +22,6 @@ namespace NukeLaunch.Models {
 		private Vector2 direction;
 		private List<Color[,]> textureColourDatas;
 		private readonly Vector2 GRAVITY = new Vector2(0f, 10f / 1000f);
-		public const float BLAST_RADIUS = 15f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -56,7 +55,7 @@ namespace NukeLaunch.Models {
 			for (int i = 0; i < frames; i++) {
 				frame = this.bomb.Frames[i];
 				this.textureColourDatas.Add(
-					TextureUtils.textureTo2DArray(this.bomb.Texture, startX: frame.X, width: frame.X + frame.Width));
+					TextureUtils.getColourData2D(this.bomb.Texture, startX: frame.X, width: frame.X + frame.Width));
 			}
 
 			//Smoke emitter

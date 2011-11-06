@@ -32,7 +32,7 @@ Objectives of this demo is to essentially write Reimers shooter tutorial using m
 		Time
 ============================
 Planning:	1hour	
-Core programming:	11.5hours	6:20pm-
+Core programming:	11.5hours	6:20pm-6:43pm	7:10pm-8:17pm
 Terrain generation:
 Art:	1.75hours	
 Sound:

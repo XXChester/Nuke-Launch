@@ -79,7 +79,7 @@ namespace NukeLaunch.Models {
 			this.leftBarrel = new StaticDrawable2D(staticParms);
 
 			this.activeBarrel = this.rightBarrel;
-			this.textureColourData = TextureUtils.TextureTo2DArray(this.truck.Texture);
+			this.textureColourData = TextureUtils.getColourData2D(this.truck.Texture);
 			setMatrix();
 		}
 		#endregion Constructor

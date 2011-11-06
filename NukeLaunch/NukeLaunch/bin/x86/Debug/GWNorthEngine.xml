@@ -65,6 +65,12 @@
             </summary>
             <param name="parms">BaseSpriteDrawableParams object</param>
         </member>
+        <member name="M:GWNorthEngine.Model.Base2DSpriteDrawable.setRenderingRectByTexture(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Sets the rendering rectangle based on the texture's bounds
+            </summary>
+            <param name="texture">Texture to base the Rendering Rectangle on</param>
+        </member>
         <member name="M:GWNorthEngine.Model.Base2DSpriteDrawable.scaleAsLifeProgresses(Microsoft.Xna.Framework.Vector2)">
             <summary>
             Scales the object over time
@@ -1740,6 +1746,25 @@
             /// <param name="colour">Colour of the texture</param>
             <returns>Newly created Texture2D object</returns>
         </member>
+        <member name="M:GWNorthEngine.Utils.TextureUtils.getColourData(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            Retrieves the texures colour information
+            </summary>
+            <param name="texture">Texture to retrieve the colour array from</param>
+            <returns>Colour[] of the texture</returns>
+        </member>
+        <member name="M:GWNorthEngine.Utils.TextureUtils.getColourData2D(Microsoft.Xna.Framework.Graphics.Texture2D,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Retrieves the Texture's colour data in a 2D array
+            </summary>
+            <remarks>The texture data is in x,y format not y,x format at this time</remarks>
+            <param name="texture">Texture that we want to analyze</param>
+            <param name="startX">Optional parameter of where to start on the X axis in the texture</param>
+            <param name="startY">Optional parameter of where to start on the Y axis in the texture</param>
+            <param name="width">Optional parameter of where to stop analyzing on the X axis</param>
+            <param name="height">Optional parameter of where to stop analyzing on the Y axis</param>
+            <returns>Color[,] of the texture</returns>
+        </member>
         <member name="T:GWNorthEngine.Utils.DebugUtils">
             <summary>
             Helpful methods for debugging
@@ -2253,6 +2278,28 @@
             <summary>
             Helper methods for determining collision between objects
             </summary>
+        </member>
+        <member name="M:GWNorthEngine.Utils.CollisionUtils.doPixelsIntersect(Microsoft.Xna.Framework.Color[0:,0:],Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Color[0:,0:],Microsoft.Xna.Framework.Matrix)">
+            <summary>
+            Determines if two textures pixels intersect
+            </summary>
+            <param name="texture1Data">Texture1's colour data</param>
+            <param name="texture1Matrix">The matrix used to render Texture1</param>
+            <param name="texture2Data">Texture2's colour data</param>
+            <param name="texture2Matrix">The matrix used to render Texture2</param>
+            <returns>True if a collision was detected, otherwise false</returns>
+        </member>
+        <member name="M:GWNorthEngine.Utils.CollisionUtils.doPixelsIntersect(Microsoft.Xna.Framework.Color[0:,0:],Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Color[0:,0:],Microsoft.Xna.Framework.Matrix,Microsoft.Xna.Framework.Vector2@)">
+            <summary>
+            Determines if two textures pixels intersect and at which point
+            </summary>
+            <remarks>The collision is based on data in x,y format not y,x format at this time</remarks>
+            <param name="texture1Data">Texture1's colour data</param>
+            <param name="texture1Matrix">The matrix used to render Texture1</param>
+            <param name="texture2Data">Texture2's colour data</param>
+            <param name="texture2Matrix">The matrix used to render Texture2</param>
+            <param name="collisionPoint">Out the Vector2 in which a collision occurred if at all</param>
+            <returns>True if a collision was detected, otherwise false</returns>
         </member>
         <member name="T:GWNorthEngine.Model.Params.Animated2DSpriteParams">
             <summary>

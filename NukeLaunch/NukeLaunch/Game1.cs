@@ -157,7 +157,7 @@ namespace NukeLaunch {
 						StateManager.getInstance().CurrentGameState = StateManager.GameState.GameOver;
 					} else if (CollisionHelper.collision(this.nuke, this.terrain)) {
 						this.explosionEmitter.reset(this.nuke.Position);
-						this.terrain.destroy(this.nuke.Position, Nuke.BLAST_RADIUS);
+						this.terrain.destroy(GraphicsDevice, this.nuke.Position);
 						this.nuke.State = SpriteState.InActive;
 					}
 				}
@@ -169,7 +169,7 @@ namespace NukeLaunch {
 
 #if DEBUG
 			if (InputManager.getInstance().isButtonDown(MouseButton.Left)) {
-				this.terrain.destroy(InputManager.getInstance().MousePosition, Nuke.BLAST_RADIUS);
+				this.terrain.destroy(GraphicsDevice, InputManager.getInstance().MousePosition);
 			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
 				reset();
