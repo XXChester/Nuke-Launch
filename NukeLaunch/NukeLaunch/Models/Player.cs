@@ -15,6 +15,7 @@ using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Input;
 using GWNorthEngine.Utils;
+using GWNorthEngine.Audio;
 
 using NukeLaunch.Logic;
 using NukeLaunch.Managers;
@@ -29,8 +30,8 @@ namespace NukeLaunch.Models {
 		#endregion Class properties
 
 		#region Constructor
-		public Player(ContentManager content, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ownerID)
-			: base(content, position, nukeDelegate, turnDelegate, ownerID) {
+		public Player(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ownerID)
+			: base(content, sfxEngine, position, nukeDelegate, turnDelegate, ownerID) {
 			Text2DParams textParms = new Text2DParams();
 			textParms.Font = LoadingUtils.loadSpriteFont(content, "SpriteFont1");
 			textParms.Position = new Vector2(10f);
@@ -50,9 +51,9 @@ namespace NukeLaunch.Models {
 
 				// Adjust barel angle
 				if (InputManager.getInstance().isKeyDown(Keys.Left)) {
-					base.angle -= 1f;
+					base.rotate(RotationDirection.Down);
 				} else if (InputManager.getInstance().isKeyDown(Keys.Right)) {
-					base.angle += 1f;
+					base.rotate(RotationDirection.Up);
 				}
 
 				// adjust power
@@ -67,18 +68,12 @@ namespace NukeLaunch.Models {
 				} else if (InputManager.getInstance().wasKeyPressed(Keys.A)) {
 					if (base.direction != Direction.Left) {
 						base.direction = Direction.Left;
-						base.truck.SpriteEffect = SpriteEffects.FlipHorizontally;
-						base.activeBarrel = base.leftBarrel;
-						float preAngle = base.angle;
-						base.angle = (base.angle - base.angle) - preAngle;
+						base.updateDirection();
 					}
 				} else if (InputManager.getInstance().wasKeyPressed(Keys.D)) {
 					if (base.direction != Direction.Right) {
 						base.direction = Direction.Right;
-						base.truck.SpriteEffect = SpriteEffects.None;
-						base.activeBarrel = base.rightBarrel;
-						float preAngle = base.angle;
-						base.angle = (base.angle - base.angle) - preAngle;
+						base.updateDirection();
 					}
 				}
 				this.powerText.WrittenText = "Power: " + base.power + "%";

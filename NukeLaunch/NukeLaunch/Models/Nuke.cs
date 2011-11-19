@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Utils;
+using GWNorthEngine.Audio;
 using NukeLaunch.Logic;
 namespace NukeLaunch.Models {
 	public class Nuke {
@@ -21,6 +22,7 @@ namespace NukeLaunch.Models {
 		private Animated2DSprite bomb;
 		private Vector2 direction;
 		private List<Color[,]> textureColourDatas;
+		private SFXEngine sfxEngine;
 		private readonly Vector2 GRAVITY = new Vector2(0f, 10f / 1000f);
 		#endregion Class variables
 
@@ -33,7 +35,7 @@ namespace NukeLaunch.Models {
 		#endregion Class properties
 
 		#region Constructor
-		public Nuke(ContentManager content) {
+		public Nuke(ContentManager content, SFXEngine sfxEngine) {
 			int frames = 6;
 			BaseAnimationManagerParams animationParms = new BaseAnimationManagerParams();
 			animationParms.AnimationState = AnimationManager.AnimationState.PlayForward;
@@ -58,11 +60,14 @@ namespace NukeLaunch.Models {
 					TextureUtils.getColourData2D(this.bomb.Texture, startX: frame.X, width: frame.X + frame.Width));
 			}
 
-			//Smoke emitter
+			// Smoke emitter
 			BaseParticle2DEmitterParams particleEmitterParms = new BaseParticle2DEmitterParams();
 			particleEmitterParms.ParticleTexture = LoadingUtils.loadTexture2D(content, "Smoke");
 			particleEmitterParms.SpawnDelay = SmokeParticleEmitter.SPAWN_DELAY;
 			this.emitter = new SmokeParticleEmitter(content, particleEmitterParms);
+
+			// sfx
+			this.sfxEngine = sfxEngine;
 		}
 		#endregion Constructor
 

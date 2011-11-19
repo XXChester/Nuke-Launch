@@ -22,7 +22,7 @@ Objectives of this demo is to essentially write Reimers shooter tutorial using m
 [*]Implement turn mechanism and whoever's turn it is render the barrel, once implemented turn off so we can finish the other mechanics
 [*]Smoke trail
 [*]Destructable terrain		-Alot of struggle here but ended up thinking of a very simple solution
-[]Sound effects
+[*]Sound effects
 []Terrain generator
 []Turn turn mechanism back on
 []AI
@@ -32,10 +32,10 @@ Objectives of this demo is to essentially write Reimers shooter tutorial using m
 		Time
 ============================
 Planning:	1hour	
-Core programming:	14hours	
+Core programming:	14.5hours		7:10pm-8:21pm
 Terrain generation:
 Art:	1.75hours	
-Sound:
+Sound:	2hours	
 	
 Total Time:	
 Total lines:	

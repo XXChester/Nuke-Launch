@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Utils;
+using GWNorthEngine.Audio;
 
 using NukeLaunch.Logic;
 using NukeLaunch.Managers;
@@ -22,8 +23,11 @@ namespace NukeLaunch.Models {
 			Right,
 			Left,
 		}
+		protected enum RotationDirection {
+			Up,
+			Down
+		}
 		#region Class variables
-		protected Vector2 position;
 		protected Direction direction;
 		protected float angle;
 		protected float power;
@@ -31,6 +35,11 @@ namespace NukeLaunch.Models {
 		protected StaticDrawable2D leftBarrel;
 		protected StaticDrawable2D rightBarrel;
 		protected StaticDrawable2D activeBarrel;
+
+		private float previousAngle;
+		private SFXEngine sfxEngine;
+		private SoundEffect launchSFX;
+		private SoundEffect aimingSFX;
 		private Color[,] textureColourData;
 		private ContentManager content;
 		private NukeDelegate nukeDelegate;
@@ -41,17 +50,18 @@ namespace NukeLaunch.Models {
 		protected const float POWER_INCREASE = 1f;
 		private const float TRUCK_CAB_CLEARANCE = 70f;
 		private const float MAX_ANGLE = 5f;
-		private const float SHIFT_PER_SECOND = 1f;//500f / 1000f;
+		private const float SHIFT_PER_SECOND = 750f / 1000f;
 		#endregion Class variables
 
 		#region Class propeties
 		public Color[,] TextureColourData { get { return this.textureColourData; } }
+		public Vector2 Position { get { return this.truck.Position; } }
 		public Matrix Matrix { get; set; }
 		public int ID { get; set; }
 		#endregion Class properties
 
 		#region Constructor
-		public Launcher(ContentManager content, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ID) {
+		public Launcher(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ID) {
 			this.content = content;
 			this.angle = 90f;
 			this.direction = Direction.Right;
@@ -81,6 +91,11 @@ namespace NukeLaunch.Models {
 			this.activeBarrel = this.rightBarrel;
 			this.textureColourData = TextureUtils.getColourData2D(this.truck.Texture);
 			setMatrix();
+
+			// sfx
+			this.sfxEngine = sfxEngine;
+			this.launchSFX = LoadingUtils.loadSoundEffect(content, "Launch");
+			this.aimingSFX = LoadingUtils.loadSoundEffect(content, "Aiming");
 		}
 		#endregion Constructor
 
@@ -97,6 +112,57 @@ namespace NukeLaunch.Models {
 			
 		}
 
+		protected void updateDirection() {
+			if (this.direction == Direction.Left) {
+				this.truck.SpriteEffect = SpriteEffects.FlipHorizontally;
+				this.activeBarrel = this.leftBarrel;
+			} else if (this.direction == Direction.Right) {
+				this.truck.SpriteEffect = SpriteEffects.None;
+				this.activeBarrel = this.rightBarrel;
+			}
+			float preAngle = this.angle;
+			this.angle = (this.angle - this.angle) - preAngle;
+
+
+			/*if (InputManager.getInstance().wasKeyPressed(Keys.A)) {
+				if (base.direction != Direction.Left) {
+					base.direction = Direction.Left;
+					base.truck.SpriteEffect = SpriteEffects.FlipHorizontally;
+					base.activeBarrel = base.leftBarrel;
+					float preAngle = base.angle;
+					base.angle = (base.angle - base.angle) - preAngle;
+				}
+			} else if (InputManager.getInstance().wasKeyPressed(Keys.D)) {
+				if (base.direction != Direction.Right) {
+					base.direction = Direction.Right;
+					base.truck.SpriteEffect = SpriteEffects.None;
+					base.activeBarrel = base.rightBarrel;
+					float preAngle = base.angle;
+					base.angle = (base.angle - base.angle) - preAngle;
+				}
+			}*/
+		}
+
+		protected void rotate(RotationDirection rotationDirection) {
+			if (rotationDirection == RotationDirection.Up) {
+				this.angle += 1f;
+			} else if (rotationDirection == RotationDirection.Down) {
+				this.angle -= 1f;
+			}
+
+			if (this.direction == Direction.Right) {
+				this.angle = MathHelper.Clamp(this.angle, MAX_ANGLE, TRUCK_CAB_CLEARANCE);
+			} else if (this.direction == Direction.Left) {
+				this.angle = MathHelper.Clamp(this.angle, -TRUCK_CAB_CLEARANCE, -MAX_ANGLE);
+			}
+
+			if (this.angle != this.previousAngle) {
+				if (!this.sfxEngine.isPlaying(this.aimingSFX.Name)) {
+					this.sfxEngine.playSoundEffect(this.aimingSFX);
+				}
+			}
+		}
+
 		public void shiftDown(float elapsed) {
 			float change = (SHIFT_PER_SECOND * elapsed);
 			this.truck.Position = new Vector2(this.truck.Position.X, this.truck.Position.Y + change);
@@ -106,9 +172,10 @@ namespace NukeLaunch.Models {
 		}
 
 		public void fire() {
+			this.sfxEngine.playSoundEffect(this.launchSFX);
 			this.nukeDelegate.Invoke(
 				this.activeBarrel.Position, this.activeBarrel.Origin, this.activeBarrel.Rotation, this.power / 7f, this.ID);
-			//this.turnDelegate.Invoke(this.ID);
+			this.turnDelegate.Invoke(this.ID);
 		}
 
 		public virtual void update(float elapsed) {
@@ -119,6 +186,7 @@ namespace NukeLaunch.Models {
 			}
 			
 			this.activeBarrel.Rotation = MathHelper.ToRadians(angle);
+			this.previousAngle = this.angle;
 		}
 
 		public virtual  void render(SpriteBatch spriteBatch) {
