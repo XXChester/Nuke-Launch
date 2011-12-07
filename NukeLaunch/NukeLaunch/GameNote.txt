@@ -23,8 +23,8 @@ Objectives of this demo is to essentially write Reimers shooter tutorial using m
 [*]Smoke trail
 [*]Destructable terrain		-Alot of struggle here but ended up thinking of a very simple solution
 [*]Sound effects
+[*]2 Player mechanic
 []Terrain generator
-[]Turn turn mechanism back on
 []AI
 []Remaining game mechanic
 
@@ -32,7 +32,7 @@ Objectives of this demo is to essentially write Reimers shooter tutorial using m
 		Time
 ============================
 Planning:	1hour	
-Core programming:	14.5hours		7:10pm-8:21pm
+Core programming:	16.25hours		
 Terrain generation:
 Art:	1.75hours	
 Sound:	2hours	

@@ -43,7 +43,6 @@ namespace NukeLaunch.Models {
 		private Color[,] textureColourData;
 		private ContentManager content;
 		private NukeDelegate nukeDelegate;
-		private NextTurnDelegate turnDelegate;
 		protected const float BARREL_OFF_SET = 15f;
 		protected const float MAX_POWER = 100f;
 		protected const float MIN_POWER = 20f;
@@ -61,12 +60,11 @@ namespace NukeLaunch.Models {
 		#endregion Class properties
 
 		#region Constructor
-		public Launcher(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ID) {
+		public Launcher(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, int ID) {
 			this.content = content;
 			this.angle = 90f;
 			this.direction = Direction.Right;
 			this.nukeDelegate = nukeDelegate;
-			this.turnDelegate = turnDelegate;
 			this.power = 100f;
 			this.ID = ID;
 
@@ -175,7 +173,6 @@ namespace NukeLaunch.Models {
 			this.sfxEngine.playSoundEffect(this.launchSFX);
 			this.nukeDelegate.Invoke(
 				this.activeBarrel.Position, this.activeBarrel.Origin, this.activeBarrel.Rotation, this.power / 7f, this.ID);
-			this.turnDelegate.Invoke(this.ID);
 		}
 
 		public virtual void update(float elapsed) {
@@ -190,7 +187,8 @@ namespace NukeLaunch.Models {
 		}
 
 		public virtual  void render(SpriteBatch spriteBatch) {
-			if ((int)StateManager.getInstance().WhosTurn == this.ID) {
+			if ((int)StateManager.getInstance().WhosTurn == this.ID && 
+				StateManager.getInstance().CurrentGameState == StateManager.GameState.Active) {
 				this.activeBarrel.render(spriteBatch);
 			}
 			this.truck.render(spriteBatch);

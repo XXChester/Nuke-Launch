@@ -30,8 +30,8 @@ namespace NukeLaunch.Models {
 		#endregion Class properties
 
 		#region Constructor
-		public Player(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, NextTurnDelegate turnDelegate, int ownerID)
-			: base(content, sfxEngine, position, nukeDelegate, turnDelegate, ownerID) {
+		public Player(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, int ownerID)
+			: base(content, sfxEngine, position, nukeDelegate, ownerID) {
 			Text2DParams textParms = new Text2DParams();
 			textParms.Font = LoadingUtils.loadSpriteFont(content, "SpriteFont1");
 			textParms.Position = new Vector2(10f);
@@ -43,7 +43,7 @@ namespace NukeLaunch.Models {
 		#region Support methods
 		public override void update(float elapsed) {
 			if (StateManager.getInstance().CurrentGameState == StateManager.GameState.Active
-				&& StateManager.getInstance().WhosTurn == StateManager.Player.One) {
+				&& (int)StateManager.getInstance().WhosTurn == base.ID) {
 				// handle input
 				if (InputManager.getInstance().wasKeyPressed(Keys.Space)) {
 					base.fire();
@@ -83,7 +83,10 @@ namespace NukeLaunch.Models {
 
 		public override void render(SpriteBatch spriteBatch) {
 			base.render(spriteBatch);
-			this.powerText.render(spriteBatch);
+			if (StateManager.getInstance().CurrentGameState == StateManager.GameState.Active
+				&& (int)StateManager.getInstance().WhosTurn == base.ID) {
+				this.powerText.render(spriteBatch);
+			}
 		}
 		#endregion Support methods
 	}

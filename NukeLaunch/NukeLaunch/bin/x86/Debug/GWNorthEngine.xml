@@ -463,6 +463,14 @@
             <param name="spriteFontName">Name of the sprite font</param>
             <returns>Texture2D object</returns>
         </member>
+        <member name="M:GWNorthEngine.Utils.LoadingUtils.loadModel(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
+            <summary>
+            Loads a Model via the ContentManager and assigns the model custom data for debugging purposes
+            </summary>
+            <param name="content">ContentManager object</param>
+            <param name="modelName">Name of the model</param>
+            <returns></returns>
+        </member>
         <member name="M:GWNorthEngine.Utils.LoadingUtils.loadSoundEffect(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
             <summary>
             Loads a SoundEffect via the ContentManager and assigns the sound effect custom data for debugging purposes
@@ -1063,6 +1071,56 @@
             </summary>
             <param name="gameTime">GameTime object</param>
             <returns>Current frames per second (FPS)</returns>
+        </member>
+        <member name="T:GWNorthEngine.Engine.Params.DefaultCameraParams">
+            <summary>
+            Object containing the data required to build a default camera
+            </summary>
+        </member>
+        <member name="T:GWNorthEngine.Engine.Params.CameraParams">
+            <summary>
+            Object containing the data required to build a camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Params.CameraParams.Position">
+            <summary>
+            Gets or Sets the position of the Camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Params.CameraParams.Target">
+            <summary>
+            Gets or sets the cameras target or look at position
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Params.CameraParams.Up">
+            <summary>
+            Gets or sets the Up vector of the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Params.CameraParams.Rotation">
+            <summary>
+            Gets or sets the rotation of the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Params.CameraParams.ViewMatrix">
+            <summary>
+            Gets or sets the view matrix of the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Params.CameraParams.ProjectionMatrix">
+            <summary>
+            Gets or sets the projection matrix of the camera
+            </summary>
+        </member>
+        <member name="M:GWNorthEngine.Engine.Params.DefaultCameraParams.#ctor">
+            <summary>
+            Constructs a default camera setup with the following values
+            Position:			Vector3(0f,0f,50f)
+            Target:				Vector3.Zero
+            UpVector:			Vector3.Up
+            ViewMatrix:			Matrix.Identity
+            ProjectionMatrix:	Matrix.createPerspectiveFOV(45f, 16:9, .5f, 5000f)
+            </summary>
         </member>
         <member name="T:GWNorthEngine.AI.AStar.PathNode">
             <summary>
@@ -1679,6 +1737,62 @@
             Front end application is in debug mode
             </summary>
         </member>
+        <member name="T:GWNorthEngine.Engine.Camera">
+            <summary>
+            Models the data required for a camera to be used in 3D space
+            </summary>
+        </member>
+        <member name="M:GWNorthEngine.Engine.Camera.#ctor(GWNorthEngine.Engine.Params.CameraParams)">
+            <summary>
+            Creates a Camera based on the data parameter object
+            </summary>
+            <param name="parms">CameraParams object</param>
+        </member>
+        <member name="M:GWNorthEngine.Engine.Camera.updateViewMatrix">
+            <summary>
+            Updates the view matrix based on the cameras current position, target and up vector
+            </summary>
+        </member>
+        <member name="M:GWNorthEngine.Engine.Camera.updateRotationMatrix">
+            <summary>
+            Updates the rotation matrix and applies it to the cameras position, target and up vector (Yaw, Pitch and Roll)
+            </summary>
+        </member>
+        <member name="M:GWNorthEngine.Engine.Camera.update">
+            <summary>
+            Updates the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Camera.Position">
+            <summary>
+            Gets or Sets the position of the Camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Camera.Target">
+            <summary>
+            Gets or sets the cameras target or look at position
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Camera.Up">
+            <summary>
+            Gets or sets the Up vector of the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Camera.Rotation">
+            <summary>
+            Gets or sets the rotation of the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Camera.ViewMatrix">
+            <summary>
+            Gets or sets the view matrix of the camera
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Engine.Camera.ProjectionMatrix">
+            <summary>
+            Gets or sets the projection matrix of the camera
+            </summary>
+        </member>
         <member name="T:GWNorthEngine.Audio.Params.SFXEngineParams">
             <summary>
             Object containing the required data to build a SFXEngine instance
@@ -1962,6 +2076,11 @@
         <member name="F:GWNorthEngine.Tools.TilePlacer.Constants.XML_WIDTH">
             <summary>
             Width of the map
+            </summary>
+        </member>
+        <member name="F:GWNorthEngine.Tools.TilePlacer.Constants.XML_TILE_SIZE">
+            <summary>
+            Size of the tiles on the layer
             </summary>
         </member>
         <member name="F:GWNorthEngine.Tools.TilePlacer.Constants.XML_HEADER_LAYER">
@@ -2651,6 +2770,42 @@
             <param name="paramType">Type of the value</param>
             <returns>Clean parameter</returns>
         </member>
+        <member name="T:GWNorthEngine.Model.Params.BaseModelParams">
+            <summary>
+            Object containing the data required to build a 3D model
+            </summary>
+        </member>
+        <member name="M:GWNorthEngine.Model.Params.BaseModelParams.#ctor">
+            <summary>
+            Builds the default settings for the ModelParams. The default settings are below;
+            Scale:		new Vector3(1f)
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.Params.BaseModelParams.Model">
+            <summary>
+            Gets or sets the core XNA Model used for rendering
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.Params.BaseModelParams.Position">
+            <summary>
+            Gets or sets the position of the model
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.Params.BaseModelParams.Rotation">
+            <summary>
+            Gets or sets the rotation of the model
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.Params.BaseModelParams.Scale">
+            <summary>
+            Gets or sets the scale of the model
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.Params.BaseModelParams.Visible">
+            <summary>
+            Gets or sets whether the model is to be drawn
+            </summary>
+        </member>
         <member name="T:GWNorthEngine.Audio.Params.MusicEngineParams">
             <summary>
             Object containing the required data to build a MusicEngine instance
@@ -2847,6 +3002,48 @@
         <member name="F:GWNorthEngine.Model.AnimationManager.AnimationState.PlayForwardOnce">
             <summary>
             Animation plays through forward 1 time
+            </summary>
+        </member>
+        <member name="T:GWNorthEngine.Model.BaseModel">
+            <summary>
+            Basic 3D model class
+            </summary>
+        </member>
+        <member name="F:GWNorthEngine.Model.BaseModel.model">
+            <summary>
+            Internal XNA Model object
+            </summary>
+        </member>
+        <member name="M:GWNorthEngine.Model.BaseModel.#ctor(GWNorthEngine.Model.Params.BaseModelParams)">
+            <summary>
+            Builds a Model based on the parms specified
+            </summary>
+            <param name="parms"></param>
+        </member>
+        <member name="M:GWNorthEngine.Model.BaseModel.render(GWNorthEngine.Engine.Camera)">
+            <summary>
+            Renders the model
+            <param name="camera">Camera the model uses to render with</param>
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.BaseModel.Position">
+            <summary>
+            Gets or sets the position of the model
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.BaseModel.Rotation">
+            <summary>
+            Gets or sets the rotation of the model
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.BaseModel.Scale">
+            <summary>
+            Gets or sets the scale of the model
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.BaseModel.Visible">
+            <summary>
+            Gets or sets whether the model is to be drawn
             </summary>
         </member>
         <member name="T:GWNorthEngine.Model.StaticDrawable2D">

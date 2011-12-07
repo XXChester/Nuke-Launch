@@ -15,6 +15,11 @@ namespace NukeLaunch.Managers {
 			GameOver
 		}
 
+		public enum GameType {
+			PlayerVsComputers,
+			PlayerVsPlayer
+		}
+
 		public enum Player {
 			One,
 			Two,
@@ -25,6 +30,7 @@ namespace NukeLaunch.Managers {
 		#region Class properties
 		public GameState CurrentGameState { get; set; }
 		public Player WhosTurn { get; set; }
+		public GameType TypeOfGame { get; set; }
 		#endregion Class properties
 
 		public static StateManager getInstance() {
@@ -35,6 +41,8 @@ namespace NukeLaunch.Managers {
 		public StateManager() {
 			this.CurrentGameState = GameState.Loading;
 			this.WhosTurn = Player.One;
+			this.TypeOfGame = GameType.PlayerVsPlayer;
+			//this.TypeOfGame = GameType.PlayerVsComputers;
 			//this.CurrentGameState = GameState.Active;
 		}
 		#endregion Constructor

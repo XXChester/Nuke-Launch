@@ -31,8 +31,8 @@ namespace NukeLaunch.Models {
 
 		#region Constructor
 		public Enemy(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate,
-			NextTurnDelegate turnDelegate, int ownerID, ClosestTargetDelegate closestTarget)
-			: base(content, sfxEngine, position, nukeDelegate, turnDelegate, ownerID) {
+			int ownerID, ClosestTargetDelegate closestTarget)
+			: base(content, sfxEngine, position, nukeDelegate, ownerID) {
 			this.closestTarget = closestTarget;
 		}
 		#endregion Constructor
