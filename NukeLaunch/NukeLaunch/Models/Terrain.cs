@@ -29,13 +29,13 @@ namespace NukeLaunch.Models {
 		#region Constructor
 		public Terrain(ContentManager content) {
 			StaticDrawable2DParams parms = new StaticDrawable2DParams();
-			parms.Texture = LoadingUtils.loadTexture2D(content, "DefaultTerrain");
+			parms.Texture = LoadingUtils.load<Texture2D>(content, "DefaultTerrain");
 			this.terrain = new StaticDrawable2D(parms);
 			this.textureColourData = TextureUtils.getColourData2D(this.terrain.Texture);
 			this.Matrix = Matrix.Identity;
 
 			this.distancesFromMiddle = new List<Vector2>();
-			Texture2D crater = LoadingUtils.loadTexture2D(content, "Crater");
+			Texture2D crater = LoadingUtils.load<Texture2D>(content, "Crater");
 			Color[,] colours = TextureUtils.getColourData2D(crater);
 			for (int y = 0; y < crater.Height; y++) {
 				for (int x = 0; x < crater.Width; x++) {

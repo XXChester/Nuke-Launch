@@ -33,7 +33,7 @@ namespace NukeLaunch.Models {
 		public Player(ContentManager content, SFXEngine sfxEngine, Vector2 position, NukeDelegate nukeDelegate, int ownerID)
 			: base(content, sfxEngine, position, nukeDelegate, ownerID) {
 			Text2DParams textParms = new Text2DParams();
-			textParms.Font = LoadingUtils.loadSpriteFont(content, "SpriteFont1");
+			textParms.Font = LoadingUtils.load<SpriteFont>(content, "SpriteFont1");
 			textParms.Position = new Vector2(10f);
 			textParms.LightColour = Color.Black;
 			this.powerText = new Text2D(textParms);

@@ -46,7 +46,7 @@ namespace NukeLaunch.Models {
 			spriteParms.Rotation = 0f;
 			spriteParms.Origin = new Vector2(32f);
 			spriteParms.Scale = new Vector2(.75f);
-			spriteParms.Texture2D = LoadingUtils.loadTexture2D(content, "NukeSprite");
+			spriteParms.Texture2D = LoadingUtils.load<Texture2D>(content, "NukeSprite");
 			spriteParms.LoadingType = Animated2DSprite.LoadingType.WholeSheetReadFramesFromFile;
 			spriteParms.AnimationParams = animationParms;
 
@@ -62,7 +62,7 @@ namespace NukeLaunch.Models {
 
 			// Smoke emitter
 			BaseParticle2DEmitterParams particleEmitterParms = new BaseParticle2DEmitterParams();
-			particleEmitterParms.ParticleTexture = LoadingUtils.loadTexture2D(content, "Smoke");
+			particleEmitterParms.ParticleTexture = LoadingUtils.load<Texture2D>(content, "Smoke");
 			particleEmitterParms.SpawnDelay = SmokeParticleEmitter.SPAWN_DELAY;
 			this.emitter = new SmokeParticleEmitter(content, particleEmitterParms);
 

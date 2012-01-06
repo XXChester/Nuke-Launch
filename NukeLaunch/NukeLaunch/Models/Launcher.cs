@@ -71,18 +71,18 @@ namespace NukeLaunch.Models {
 			StaticDrawable2DParams staticParms = new StaticDrawable2DParams();
 			staticParms.Position = position;
 			staticParms.Origin = new Vector2(32f);
-			staticParms.Texture = LoadingUtils.loadTexture2D(content, "LauncherTruck");
+			staticParms.Texture = LoadingUtils.load<Texture2D>(content, "LauncherTruck");
 			this.truck = new StaticDrawable2D(staticParms);
 
 			staticParms.Position = new Vector2(this.truck.Position.X - this.truck.Origin.X, this.truck.Position.Y + BARREL_OFF_SET);
-			staticParms.Texture = LoadingUtils.loadTexture2D(content, "LauncherBarrelRight");
+			staticParms.Texture = LoadingUtils.load<Texture2D>(content, "LauncherBarrelRight");
 			staticParms.Origin = new Vector2(43f, 62f);
 			staticParms.Scale = new Vector2(.75f);
 			staticParms.Rotation = MathHelper.ToRadians(this.angle);
 			this.rightBarrel = new StaticDrawable2D(staticParms);
 
 			staticParms.Position = new Vector2(this.truck.Position.X + this.truck.Origin.X, this.truck.Position.Y + BARREL_OFF_SET);
-			staticParms.Texture = LoadingUtils.loadTexture2D(content, "LauncherBarrelLeft");
+			staticParms.Texture = LoadingUtils.load<Texture2D>(content, "LauncherBarrelLeft");
 			staticParms.Origin = new Vector2(21f, 65f);
 			this.leftBarrel = new StaticDrawable2D(staticParms);
 
@@ -92,8 +92,8 @@ namespace NukeLaunch.Models {
 
 			// sfx
 			this.sfxEngine = sfxEngine;
-			this.launchSFX = LoadingUtils.loadSoundEffect(content, "Launch");
-			this.aimingSFX = LoadingUtils.loadSoundEffect(content, "Aiming");
+			this.launchSFX = LoadingUtils.load<SoundEffect>(content, "Launch");
+			this.aimingSFX = LoadingUtils.load<SoundEffect>(content, "Aiming");
 		}
 		#endregion Constructor
 

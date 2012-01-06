@@ -30,7 +30,7 @@ namespace NukeLaunch.Models {
 				: base(parms) {
 			this.PARTICLE_TEXTURES = new Texture2D[5];
 			for (int i = 1; i <= this.PARTICLE_TEXTURES.Length; i++) {
-				this.PARTICLE_TEXTURES[i - 1] = LoadingUtils.loadTexture2D(content, "ExplosionParticle" + i);
+				this.PARTICLE_TEXTURES[i - 1] = LoadingUtils.load<Texture2D>(content, "ExplosionParticle" + i);
 			}
 			BaseParticle2DParams particleParams = new BaseParticle2DParams();
 			particleParams.Scale = new Vector2(.5f);

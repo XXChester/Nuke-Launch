@@ -430,21 +430,14 @@
             Contains helper methods for loading data from the file system
             </summary>
         </member>
-        <member name="M:GWNorthEngine.Utils.LoadingUtils.setCommonAttributes(Microsoft.Xna.Framework.Graphics.Texture2D,System.String)">
+        <member name="M:GWNorthEngine.Utils.LoadingUtils.load``1(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
             <summary>
-            Sets all of the common data for the Texture2D
+            Generic load which appends the asset name to the assets properties if the field is available
             </summary>
-            <param name="texture">Loaded Texture2D to set the data on</param>
-            <param name="fileName">Name of the file</param>
-            <returns>Texture2D with the custom data appended to it</returns>
-        </member>
-        <member name="M:GWNorthEngine.Utils.LoadingUtils.loadTexture2D(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
-            <summary>
-            Loads a texture via the ContentManager and assigns the texture custom data for debugging purposes
-            </summary>
+            <typeparam name="T">Type of object to load</typeparam>
             <param name="content">ContentManager object</param>
-            <param name="textureName">Name of the texture</param>
-            <returns>Texture2D object</returns>
+            <param name="assetName">Name of the asset to load from the content pipeline</param>
+            <returns>T object</returns>
         </member>
         <member name="M:GWNorthEngine.Utils.LoadingUtils.loadTexture2D(Microsoft.Xna.Framework.Graphics.GraphicsDevice,System.String)">
             <summary>
@@ -454,38 +447,6 @@
             <param name="fileNameWithPathAndExtension">Texute's name we are trying to load with the full path and file extension (Assets\Test.png)</param>
             <returns>Texture2D object</returns>
             <author>Largely based on http://jakepoz.com/jake_poznanski__speeding_up_xna.html </author>
-        </member>
-        <member name="M:GWNorthEngine.Utils.LoadingUtils.loadSpriteFont(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
-            <summary>
-            Loads a SpriteFont via the ContentManager and assigns the font custom data for debugging purposes
-            </summary>
-            <param name="content">ContentManager object</param>
-            <param name="spriteFontName">Name of the sprite font</param>
-            <returns>Texture2D object</returns>
-        </member>
-        <member name="M:GWNorthEngine.Utils.LoadingUtils.loadModel(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
-            <summary>
-            Loads a Model via the ContentManager and assigns the model custom data for debugging purposes
-            </summary>
-            <param name="content">ContentManager object</param>
-            <param name="modelName">Name of the model</param>
-            <returns></returns>
-        </member>
-        <member name="M:GWNorthEngine.Utils.LoadingUtils.loadSoundEffect(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
-            <summary>
-            Loads a SoundEffect via the ContentManager and assigns the sound effect custom data for debugging purposes
-            </summary>
-            <param name="content">ContentManager object</param>
-            <param name="soundEffectName">Name of the sound effect</param>
-            <returns>Texture2D object</returns>
-        </member>
-        <member name="M:GWNorthEngine.Utils.LoadingUtils.loadSong(Microsoft.Xna.Framework.Content.ContentManager,System.String)">
-            <summary>
-            Loads a Song via the ContentManager and assugbs the song custom data for debugging purposes
-            </summary>
-            <param name="content">ContentManager object</param>
-            <param name="songName">Name of the song</param>
-            <returns></returns>
         </member>
         <member name="T:GWNorthEngine.Tools.Translator">
             <summary>
@@ -1610,19 +1571,26 @@
             Params object containing the data required to build a TexturedButton object
             </summary>
         </member>
-        <member name="P:GWNorthEngine.Model.Params.TexturedButtonParams.Content">
+        <member name="M:GWNorthEngine.Model.Params.TexturedButtonParams.#ctor">
             <summary>
-            Gets or sets the ContentManager object used for loading textures
+            Initializes a button with the default values set below
+            
+            LightColour:		Color.White;
             </summary>
         </member>
-        <member name="P:GWNorthEngine.Model.Params.TexturedButtonParams.RegularTextureFileName">
+        <member name="P:GWNorthEngine.Model.Params.TexturedButtonParams.RegularTexture">
             <summary>
-            Gets or sets the regular texture's file name for the button
+            Gets or sets the regular texture for the button
             </summary>
         </member>
-        <member name="P:GWNorthEngine.Model.Params.TexturedButtonParams.MouseOverTextureFileName">
+        <member name="P:GWNorthEngine.Model.Params.TexturedButtonParams.MouseOverTexture">
             <summary>
-            Gets or sets the buttons mouse over texture file name
+            Gets or sets the buttons mouse over texture
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.Params.TexturedButtonParams.LightColour">
+            <summary>
+            Gets or sets the Colour in which the button is to be rendered in
             </summary>
         </member>
         <member name="T:GWNorthEngine.Model.Animated2DSprite">
@@ -2629,6 +2597,11 @@
         <member name="M:GWNorthEngine.Model.TexturedButton.dispose">
             <summary>
             Releases the portions of the button that cause memory leaks
+            </summary>
+        </member>
+        <member name="P:GWNorthEngine.Model.TexturedButton.LightColour">
+            <summary>
+            Gets or sets the Colour in which the button is to be rendered in
             </summary>
         </member>
         <member name="T:GWNorthEngine.Utils.EnumUtils">

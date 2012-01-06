@@ -113,7 +113,7 @@ namespace NukeLaunch {
 			this.explosionEmitter = new ExplosionParticleEmitter(Content, new BaseParticle2DEmitterParams());
 
 			// sfx
-			this.explosionSFX = LoadingUtils.loadSoundEffect(Content, "Explosion");
+			this.explosionSFX = LoadingUtils.load<SoundEffect>(Content, "Explosion");
 		}
 
 		private void loadDeletagtes(out NukeDelegate nukeDelegate, out  ClosestTargetDelegate closestTargetDelegate) {
