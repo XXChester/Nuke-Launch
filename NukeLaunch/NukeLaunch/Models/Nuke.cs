@@ -41,13 +41,12 @@ namespace NukeLaunch.Models {
 			animationParms.AnimationState = AnimationManager.AnimationState.PlayForward;
 			animationParms.FrameRate = 100f;
 			animationParms.TotalFrameCount = frames;
-			Animated2DSpriteParams spriteParms = new Animated2DSpriteParams();
+			BaseAnimated2DSpriteParams spriteParms = new Animated2DSpriteLoadSingleRowBasedOnTexture();
 			spriteParms.Position = new Vector2(-200f);
 			spriteParms.Rotation = 0f;
 			spriteParms.Origin = new Vector2(32f);
 			spriteParms.Scale = new Vector2(.75f);
 			spriteParms.Texture2D = LoadingUtils.load<Texture2D>(content, "NukeSprite");
-			spriteParms.LoadingType = Animated2DSprite.LoadingType.WholeSheetReadFramesFromFile;
 			spriteParms.AnimationParams = animationParms;
 
 			this.bomb = new Animated2DSprite(spriteParms);
