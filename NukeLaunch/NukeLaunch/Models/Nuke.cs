@@ -14,6 +14,8 @@ using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Utils;
 using GWNorthEngine.Audio;
+using GWNorthEngine.Logic;
+using GWNorthEngine.Logic.Params;
 using NukeLaunch.Logic;
 namespace NukeLaunch.Models {
 	public class Nuke {
@@ -38,7 +40,7 @@ namespace NukeLaunch.Models {
 		public Nuke(ContentManager content, SFXEngine sfxEngine) {
 			int frames = 6;
 			BaseAnimationManagerParams animationParms = new BaseAnimationManagerParams();
-			animationParms.AnimationState = AnimationManager.AnimationState.PlayForward;
+			animationParms.AnimationState = AnimationState.PlayForward;
 			animationParms.FrameRate = 100f;
 			animationParms.TotalFrameCount = frames;
 			BaseAnimated2DSpriteParams spriteParms = new Animated2DSpriteLoadSingleRowBasedOnTexture();
