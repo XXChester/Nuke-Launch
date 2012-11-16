@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
+using GWNorthEngine.Model.Effects;
+using GWNorthEngine.Model.Effects.Params;
 using GWNorthEngine.Utils;
 using NukeLaunch.Logic;
 namespace NukeLaunch.Models {
@@ -76,7 +78,14 @@ namespace NukeLaunch.Models {
 			base.particleParams.Position = new Vector2(x, y);
 			base.particleParams.Direction = new Vector2(directionX, directionY);
 			base.particleParams.Texture = this.PARTICLE_TEXTURES[base.RANDOM.Next(this.PARTICLE_TEXTURES.Length)];
-			base.particles.Add(new ExplosionParticle(base.particleParams, rotationSpeed));
+			ExplosionParticle particle = new ExplosionParticle(base.particleParams);
+			RotateOverTimeEffectParams rotateEffectParms = new RotateOverTimeEffectParams {
+				Reference = particle,
+				RotateBy = rotationSpeed
+			};
+			particle.addEffect(new RotateOverTimeEffect(rotateEffectParms));
+
+			base.particles.Add(new ExplosionParticle(base.particleParams));
 			base.createParticle();
 		}
 

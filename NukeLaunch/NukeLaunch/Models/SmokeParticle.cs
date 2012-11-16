@@ -15,7 +15,7 @@ using GWNorthEngine.Model.Params;
 namespace NukeLaunch.Models {
 	public class SmokeParticle : BaseParticle2D {
 		#region Class variables
-		private readonly Vector2 SCALE_BY = new Vector2(.0005f);
+
 		#endregion Class variables
 
 		#region Class propeties
@@ -32,8 +32,6 @@ namespace NukeLaunch.Models {
 		#region Support methods
 		public override void update(float elapsed) {
 			base.update(elapsed);
-			base.fadeOutAsLifeProgresses();
-			base.scaleAsLifeProgresses(SCALE_BY * elapsed);
 		}
 		#endregion Support methods
 	}

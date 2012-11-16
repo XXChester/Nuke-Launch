@@ -16,13 +16,12 @@ using NukeLaunch.Logic;
 namespace NukeLaunch.Models {
 	public class ExplosionParticle : BaseParticle2D {
 		#region Class variables
-		private float rotationSpeed;
 		#endregion Class variables
 
 		#region Constructor
-		public ExplosionParticle(BaseParticle2DParams parms, float rotationSpeed)
+		public ExplosionParticle(BaseParticle2DParams parms)
 			:base(parms) {
-				this.rotationSpeed = rotationSpeed;
+
 		}
 		#endregion Constructor
 
@@ -30,7 +29,6 @@ namespace NukeLaunch.Models {
 		public override void update(float elapsed) {
 			base.update(elapsed);
 			base.position += Vector2.Multiply(base.direction, elapsed);
-			base.rotateAsLifeProgresses(rotationSpeed * elapsed);
 		}
 		#endregion Support methods
 	}

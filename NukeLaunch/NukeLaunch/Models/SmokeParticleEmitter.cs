@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
+using GWNorthEngine.Model.Effects;
+using GWNorthEngine.Model.Effects.Params;
 using GWNorthEngine.Utils;
 namespace NukeLaunch.Models {
 	public class SmokeParticleEmitter : BaseParticle2DEmitter {
@@ -34,7 +36,22 @@ namespace NukeLaunch.Models {
 		#region Support methods
 		public void createParticle(Vector2 position) {
 			base.particleParams.Position = position;
-			base.particles.Add(new SmokeParticle(base.particleParams));
+			SmokeParticle particle = new SmokeParticle(base.particleParams);
+			ScaleOverTimeEffectParams effectParms = new ScaleOverTimeEffectParams {
+				Reference = particle,
+				ScaleBy = new Vector2(.005f)
+			};
+			particle.addEffect(new ScaleOverTimeEffect(effectParms));
+
+			FadeEffectParams fadeEffectParms = new FadeEffectParams {
+				Reference = particle,
+				State = FadeEffect.FadeState.Out,
+				TotalTransitionTime = TIME_TO_LIVE,
+				OriginalColour = Color.White
+			};
+			particle.addEffect(new FadeEffect(fadeEffectParms));
+
+			base.particles.Add(particle);
 			base.createParticle();
 		}
 

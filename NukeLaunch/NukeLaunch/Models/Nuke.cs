@@ -48,7 +48,7 @@ namespace NukeLaunch.Models {
 			spriteParms.Rotation = 0f;
 			spriteParms.Origin = new Vector2(32f);
 			spriteParms.Scale = new Vector2(.75f);
-			spriteParms.Texture2D = LoadingUtils.load<Texture2D>(content, "NukeSprite");
+			spriteParms.Texture = LoadingUtils.load<Texture2D>(content, "NukeSprite");
 			spriteParms.AnimationParams = animationParms;
 
 			this.bomb = new Animated2DSprite(spriteParms);

@@ -93,26 +93,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GWNorthEngine.dll" size="83968">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GWNorthEngine.dll" size="93184">
       <assemblyIdentity name="GWNorthEngine" version="1.0.0.2" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>E33jJCKuVBkUUMJxU75Sc6Q5uxA=</dsig:DigestValue>
+        <dsig:DigestValue>OyN+vZzV9Kfo2/xZONbRlEdA9AY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NukeLaunch.exe" size="29184">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NukeLaunch.exe" size="29696">
       <assemblyIdentity name="NukeLaunch" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>o3e6b6oDo94m3bVQs2HIifRYe1Q=</dsig:DigestValue>
+        <dsig:DigestValue>gtz1Yoipflp7g+IkgtnqQp5Iu9E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -275,7 +275,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>FYLQtQhugXINkofuv6tvAhEdodA=</dsig:DigestValue>
+      <dsig:DigestValue>Xjmu+1ONvLm3uvzNt2FE2y7WIGA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="GameThumbnail.png" size="5734">
