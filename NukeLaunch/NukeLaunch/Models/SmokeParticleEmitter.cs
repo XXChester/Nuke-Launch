@@ -39,7 +39,7 @@ namespace NukeLaunch.Models {
 			SmokeParticle particle = new SmokeParticle(base.particleParams);
 			ScaleOverTimeEffectParams effectParms = new ScaleOverTimeEffectParams {
 				Reference = particle,
-				ScaleBy = new Vector2(.005f)
+				ScaleBy = new Vector2(1f)
 			};
 			particle.addEffect(new ScaleOverTimeEffect(effectParms));
 

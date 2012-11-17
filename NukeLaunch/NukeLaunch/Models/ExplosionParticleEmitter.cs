@@ -68,7 +68,6 @@ namespace NukeLaunch.Models {
 			
 			// setup the particle rotation
 			float rotationSpeed = (float)base.RANDOM.Next(MAX_ROTATION_SPEED);
-			rotationSpeed /= 1000f;//per second
 			int rotationDirection = base.RANDOM.Next(2);
 			if (rotationDirection == 0) {
 				rotationSpeed *= -1;
